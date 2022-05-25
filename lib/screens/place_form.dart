@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../data/my_data.dart';
 import '../models/place.dart';
 
@@ -57,35 +58,34 @@ class _PlaceFormState extends State<PlaceForm> {
                 });
               },
             ),
-            TextFormField(
-                decoration: InputDecoration(labelText: 'Nota'),
-                onEditingComplete: _validateRate,
-                controller: _rateController,
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(
-                      (RegExp('r^[.0-5][.][0-9]{2}')))
-                ]),
+            TextField(
+              controller: _rateController,
+              decoration: InputDecoration(labelText: 'Nota'),
+              keyboardType: TextInputType.number,
+            ),
             TextField(
               controller: _averageCostController,
               decoration: InputDecoration(labelText: 'Custo medio'),
               keyboardType: TextInputType.number,
             ),
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Selecione o pais'),
+
+                // required for min/max child size
+
+                MultiSelectChipDisplay(
+                  items: DUMMY_COUNTRIES
+                      .map((country) =>
+                          MultiSelectItem(country.title, country.title))
+                      .toList(),
+                  scroll: true,
+                ),
                 SizedBox(
                   width: 20,
                 ),
-                DropdownButton(
-                    value: countrySelected,
-                    items: DUMMY_COUNTRIES
-                        .map((country) => buildMenuItem(country.title))
-                        .toList(),
-                    onChanged: (value) => setState(() {
-                          countrySelected = value.toString();
-                        })),
               ],
             ),
           ],
