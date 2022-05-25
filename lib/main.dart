@@ -18,9 +18,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'PlacesToGo',
       theme: ThemeData(
-          colorScheme: ThemeData()
-              .colorScheme
-              .copyWith(primary: Colors.purple, secondary: Colors.amber),
+          colorScheme: ThemeData().colorScheme.copyWith(
+              primary: Colors.purple,
+              secondary: Colors.amber,
+              tertiary: Colors.grey),
           //primarySwatch: Colors.purple,
           //accentColor: Colors.amber,
           fontFamily: 'Raleway',

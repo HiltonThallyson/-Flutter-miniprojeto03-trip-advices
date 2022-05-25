@@ -10,23 +10,50 @@ class PlaceForm extends StatefulWidget {
 }
 
 class _PlaceFormState extends State<PlaceForm> {
-  List<Place> placesList = DUMMY_PLACES;
   final _titleController = TextEditingController();
   final _rateController = TextEditingController();
   final _averageCostController = TextEditingController();
+  final _imgURLController = TextEditingController();
 
-  late String title;
-  late String rate;
-  late String avgCost;
-  String countrySelected = DUMMY_COUNTRIES[0].title;
+  List<String> countries = [];
+  String title = '';
+  String rate = '';
+  String avgCost = '';
+  String imageURL = '';
 
   void _validateRate() {
-    if (_rateController != null) {
+    if (_rateController.value != '') {
+      print('Entrou');
       setState(() {
-        rate = _rateController.text;
+        rate = _rateController.value.toString();
       });
     }
-    print(rate);
+  }
+
+  void _validateCost() {
+    if (_averageCostController.value != '') {
+      setState(() {
+        avgCost = _averageCostController.value.toString();
+      });
+    }
+  }
+
+  void _validateForm() {
+    if (avgCost != '' && rate != '' && title != '' && !countries.isEmpty) {
+      print('ok');
+    }
+  }
+
+  void _countriesHandler(String id) {
+    if (countries.contains(id)) {
+      setState(() {
+        countries.remove(id);
+      });
+    } else {
+      setState(() {
+        countries.add(id);
+      });
+    }
   }
 
   DropdownMenuItem<String> buildMenuItem(String item) {
@@ -44,53 +71,84 @@ class _PlaceFormState extends State<PlaceForm> {
         'New Place',
       )),
       body: Container(
-        padding: EdgeInsets.all(10),
-        child: Form(
-            child: Column(
-          children: [
-            TextField(
-              controller: _titleController,
-              decoration: InputDecoration(labelText: 'Titulo'),
-              onEditingComplete: () {
-                setState(() {
-                  if (_titleController.text != '')
-                    title = _titleController.text;
-                });
-              },
-            ),
-            TextField(
-              controller: _rateController,
-              decoration: InputDecoration(labelText: 'Nota'),
-              keyboardType: TextInputType.number,
-            ),
-            TextField(
-              controller: _averageCostController,
-              decoration: InputDecoration(labelText: 'Custo medio'),
-              keyboardType: TextInputType.number,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Selecione o pais'),
-
-                // required for min/max child size
-
-                MultiSelectChipDisplay(
-                  items: DUMMY_COUNTRIES
-                      .map((country) =>
-                          MultiSelectItem(country.title, country.title))
-                      .toList(),
-                  scroll: true,
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-              ],
-            ),
-          ],
-        )),
+        padding: EdgeInsets.all(25),
+        child: SingleChildScrollView(
+          child: Form(
+              child: Column(
+            children: [
+              TextField(
+                controller: _titleController,
+                decoration: InputDecoration(labelText: 'Titulo'),
+                onSubmitted: (_) {
+                  setState(() {
+                    if (_titleController.text != '')
+                      title = _titleController.text;
+                  });
+                },
+              ),
+              TextField(
+                controller: _rateController,
+                decoration: InputDecoration(labelText: 'Nota'),
+                keyboardType: TextInputType.number,
+                onSubmitted: (_) => _validateRate,
+              ),
+              TextField(
+                controller: _averageCostController,
+                decoration: InputDecoration(labelText: 'Custo medio'),
+                keyboardType: TextInputType.number,
+                onSubmitted: (_) => _validateCost,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Divider(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Selecione o pais'),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    child: Wrap(
+                        spacing: 5,
+                        runSpacing: 5,
+                        children: DUMMY_COUNTRIES
+                            .map(
+                              (country) => FilterChip(
+                                label: Text(country.title),
+                                onSelected: (_) =>
+                                    _countriesHandler(country.id),
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.tertiary,
+                                selectedColor:
+                                    Theme.of(context).colorScheme.primary,
+                                selected: countries.contains(country.id),
+                              ),
+                            )
+                            .toList()),
+                  ),
+                  Divider(),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  TextField(
+                      controller: _imgURLController,
+                      decoration: InputDecoration(labelText: 'Link da imagem'),
+                      onEditingComplete: () => setState(() {
+                            imageURL = _imgURLController.text;
+                          })),
+                ],
+              ),
+            ],
+          )),
+        ),
       ),
+      floatingActionButton: ElevatedButton(
+        child: Text('Confirmar'),
+        onPressed: _validateForm,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
