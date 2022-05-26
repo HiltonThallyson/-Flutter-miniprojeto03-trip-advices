@@ -21,26 +21,34 @@ class _PlaceFormState extends State<PlaceForm> {
   String avgCost = '';
   String imageURL = '';
 
-  void _validateRate() {
-    if (_rateController.value != '') {
-      print('Entrou');
+  void _validateForm() {
+    print(title);
+    print(rate);
+    print(avgCost);
+  }
+
+  void _validateTitle() {
+    print('why?');
+    if (_titleController.text != '') {
       setState(() {
-        rate = _rateController.value.toString();
+        title = _titleController.text;
+      });
+    }
+  }
+
+  void _validateRate() {
+    if (_rateController.text != '') {
+      setState(() {
+        rate = _rateController.text;
       });
     }
   }
 
   void _validateCost() {
-    if (_averageCostController.value != '') {
+    if (_averageCostController.text != '') {
       setState(() {
-        avgCost = _averageCostController.value.toString();
+        avgCost = _averageCostController.text;
       });
-    }
-  }
-
-  void _validateForm() {
-    if (avgCost != '' && rate != '' && title != '' && !countries.isEmpty) {
-      print('ok');
     }
   }
 
@@ -79,24 +87,22 @@ class _PlaceFormState extends State<PlaceForm> {
               TextField(
                 controller: _titleController,
                 decoration: InputDecoration(labelText: 'Titulo'),
-                onSubmitted: (_) {
-                  setState(() {
-                    if (_titleController.text != '')
-                      title = _titleController.text;
-                  });
-                },
+                onChanged: (_) => _validateTitle,
+                onSubmitted: (value) => _validateTitle,
               ),
               TextField(
                 controller: _rateController,
                 decoration: InputDecoration(labelText: 'Nota'),
                 keyboardType: TextInputType.number,
-                onSubmitted: (_) => _validateRate,
+                onChanged: (_) => _validateRate(),
+                onSubmitted: (_) => _validateRate(),
               ),
               TextField(
                 controller: _averageCostController,
                 decoration: InputDecoration(labelText: 'Custo medio'),
                 keyboardType: TextInputType.number,
-                onSubmitted: (_) => _validateCost,
+                onChanged: (_) => _validateCost(),
+                onSubmitted: (_) => _validateCost(),
               ),
               SizedBox(
                 height: 20,
