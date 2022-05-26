@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:f3_lugares/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
@@ -53,30 +56,36 @@ class _PlaceFormState extends State<PlaceForm> {
   void _validateForm() {
     if (countries.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(snackBarCountryError);
+      return;
     }
     if (!isTitleValid) {
       FocusScope.of(context).requestFocus(titleNode);
+      return;
     } else if (!isRateValid) {
       FocusScope.of(context).requestFocus(rateNode);
+      return;
     } else if (!isAvgCostValid) {
       FocusScope.of(context).requestFocus(avgCostNode);
-    }
-    print(title);
-    print(rate);
-    print(avgCost);
-    if (title != '' && rate != '' && avgCost != '' && countries.isNotEmpty) {
-      print(title);
-      print(rate);
-      print(avgCost);
+      return;
     } else {
-      print('Invalido');
+      final newPlace = Place(
+          id: Random().nextInt(100).toString(),
+          paises: countries,
+          titulo: title,
+          imagemUrl:
+              'https://f.i.uol.com.br/fotografia/2021/10/18/1634577429616dac156d431_1634577429_3x2_md.jpg',
+          recomendacoes: ['', ''],
+          avaliacao: double.parse(rate),
+          custoMedio: double.parse(avgCost));
+      DUMMY_PLACES.add(newPlace);
+      Navigator.of(context).popAndPushNamed(AppRoutes.HOME);
     }
   }
 
   void _validateRate() {
     setState(() {
+      rate = _rateController.text;
       if (_rateErrorText == null) {
-        rate = _rateController.text;
         isRateValid = true;
       } else {
         isRateValid = false;
@@ -85,16 +94,14 @@ class _PlaceFormState extends State<PlaceForm> {
   }
 
   void _validateCost() {
-    if (_avgCostErrorText == null) {
-      setState(() {
-        avgCost = _averageCostController.text;
+    setState(() {
+      avgCost = _averageCostController.text;
+      if (_avgCostErrorText == null) {
         isAvgCostValid = true;
-      });
-    } else {
-      setState(() {
+      } else {
         isAvgCostValid = false;
-      });
-    }
+      }
+    });
   }
 
   void _countriesHandler(String id) {
@@ -118,7 +125,7 @@ class _PlaceFormState extends State<PlaceForm> {
 
   String? get _rateErrorText {
     double? rateDouble = double.tryParse(_rateController.text);
-    if (_rateController.text == '') {
+    if (_rateController.text.isEmpty) {
       return 'Insira um valor';
     }
     if (rateDouble != null) {
@@ -131,7 +138,7 @@ class _PlaceFormState extends State<PlaceForm> {
 
   String? get _avgCostErrorText {
     double? avgCostDouble = double.tryParse(_averageCostController.text);
-    if (_averageCostController.text == '') {
+    if (_averageCostController.text.isEmpty) {
       return 'Insira um valor';
     }
     if (avgCostDouble != null) {
@@ -170,9 +177,9 @@ class _PlaceFormState extends State<PlaceForm> {
                       labelText: 'Titulo', errorText: _titleErrorText),
                   onChanged: (_) {
                     setState(() {
+                      title = _titleController.text;
                       if (_titleErrorText == null) {
                         isTitleValid = true;
-                        title = _titleController.text;
                       } else {
                         isTitleValid = false;
                       }
