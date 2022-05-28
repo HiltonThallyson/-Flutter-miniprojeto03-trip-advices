@@ -30,6 +30,7 @@ class _PlaceFormState extends State<PlaceForm> {
   bool isRateValid = false;
   bool isAvgCostValid = false;
   bool isTitleValid = false;
+  bool isPlaceAdded = false;
 
   static const snackBarCountryError = SnackBar(
     content: Text('Selecione ao menos 1 pais'),
@@ -78,7 +79,9 @@ class _PlaceFormState extends State<PlaceForm> {
           avaliacao: double.parse(rate),
           custoMedio: double.parse(avgCost));
       DUMMY_PLACES.add(newPlace);
-      Navigator.of(context).popAndPushNamed(AppRoutes.HOME);
+      isPlaceAdded = true;
+      Navigator.of(context)
+          .popAndPushNamed(AppRoutes.HOME, result: isPlaceAdded);
     }
   }
 
@@ -247,15 +250,17 @@ class _PlaceFormState extends State<PlaceForm> {
                           })),
                 ],
               ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: ElevatedButton(
+                  child: Text('Confirmar'),
+                  onPressed: _validateForm,
+                ),
+              ),
             ],
           )),
         ),
       ),
-      floatingActionButton: ElevatedButton(
-        child: Text('Confirmar'),
-        onPressed: _validateForm,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

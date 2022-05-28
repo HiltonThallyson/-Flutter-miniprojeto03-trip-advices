@@ -1,4 +1,5 @@
 import 'package:f3_lugares/models/favorites.dart';
+import 'package:f3_lugares/screens/edit_places.dart';
 import 'package:f3_lugares/screens/place_form.dart';
 import 'package:flutter/material.dart';
 
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
         AppRoutes.PLACES_DETAIL: (ctx) => PlaceDetailScreen(),
         AppRoutes.SETTINGS: (ctx) => SettingsScreen(),
         AppRoutes.NEW_PLACE: (ctx) => PlaceForm(),
+        AppRoutes.EDIT_PLACE: (ctx) => EditPlaces(),
       },
     );
   }

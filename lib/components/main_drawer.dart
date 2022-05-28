@@ -2,6 +2,10 @@ import 'package:f3_lugares/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 
 class MainDrawer extends StatelessWidget {
+  final Function isSnackBarActive;
+  MainDrawer(this.isSnackBarActive);
+  bool? result;
+
   Widget _createItem(IconData icon, String label, Function() onTap) {
     return ListTile(
       leading: Icon(
@@ -18,6 +22,10 @@ class MainDrawer extends StatelessWidget {
       ),
       onTap: onTap,
     );
+  }
+
+  void _resultHandler() {
+    isSnackBarActive(result);
   }
 
   @override
@@ -41,11 +49,16 @@ class MainDrawer extends StatelessWidget {
           ),
           _createItem(Icons.place, 'Lugares',
               () => Navigator.of(context).pushReplacementNamed(AppRoutes.HOME)),
+          _createItem(Icons.create, 'Novo Lugar', () async {
+            result = await Navigator.of(context).pushNamed(AppRoutes.NEW_PLACE)
+                as bool;
+            _resultHandler();
+          }),
           _createItem(
-              Icons.create,
-              'Novo Lugar',
+              Icons.edit_location_alt,
+              'Editar Lugares',
               () => Navigator.of(context)
-                  .pushReplacementNamed(AppRoutes.NEW_PLACE)),
+                  .pushReplacementNamed(AppRoutes.EDIT_PLACE)),
           _createItem(
               Icons.settings,
               'Configurações',

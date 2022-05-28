@@ -13,6 +13,11 @@ class _TabsScreenState extends State<TabsScreen> {
 
   List<Widget> _screens = [CountriesScreen(), FavoritosScreen()];
 
+  static const snackBarPlaceAdded = SnackBar(
+    content: Text('Um novo lugar foi adicionado!'),
+    duration: const Duration(seconds: 2),
+  );
+
   _selectScreen(int index) {
     setState(() {
       _indexSelectedScreen = index;
@@ -46,6 +51,13 @@ class _TabsScreenState extends State<TabsScreen> {
         ]),
       ),
     );*/
+    void _snackBarHandler(bool isActive) {
+      if (isActive) {
+        setState(() {
+          ScaffoldMessenger.of(context).showSnackBar(snackBarPlaceAdded);
+        });
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(title: Text('Bora Viajar?')),
@@ -69,7 +81,7 @@ class _TabsScreenState extends State<TabsScreen> {
           child: Text('Menu Principal'),
         ),
       ), */
-      drawer: MainDrawer(),
+      drawer: MainDrawer(_snackBarHandler),
     );
   }
 }

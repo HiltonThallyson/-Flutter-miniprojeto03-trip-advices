@@ -1,10 +1,14 @@
 import 'package:f3_lugares/models/place.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../models/favorites.dart';
 
 class PlaceDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final place = ModalRoute.of(context)?.settings.arguments as Place;
+    var favoritesList = context.watch<Favorites>();
 
     return Scaffold(
       appBar: AppBar(
@@ -66,9 +70,17 @@ class PlaceDetailScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).pop(place.titulo);
+          favoritesList.favoritePlacesHandler(place);
         },
-        child: Icon(Icons.star),
+        child: favoritesList.favorites.contains(place)
+            ? Icon(
+                Icons.star,
+                size: 30,
+              )
+            : Icon(
+                Icons.star_border,
+                size: 30,
+              ),
       ),
     );
   }
