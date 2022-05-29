@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:f3_lugares/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../components/recommendation_modal.dart';
 import '../data/my_data.dart';
 import '../models/place.dart';

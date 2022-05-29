@@ -53,8 +53,10 @@ class _RecommendationModalState extends State<RecommendationModal> {
               ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      widget.recommendations
-                          .add(_recommendationController.text);
+                      if (_recommendationController.text.isNotEmpty) {
+                        widget.recommendations
+                            .add(_recommendationController.text);
+                      }
                     });
                   },
                   child: Text('Adicionar mais recomendacoes')),

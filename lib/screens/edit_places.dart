@@ -53,8 +53,13 @@ class _EditPlacesState extends State<EditPlaces> {
                 child: ListTile(
                   title: Padding(
                     padding: const EdgeInsets.all(15),
-                    child: Text(
-                      DUMMY_PLACES[index].titulo,
+                    child: InkWell(
+                      onTap: () => Navigator.of(context).pushNamed(
+                          AppRoutes.PLACES_DETAIL,
+                          arguments: DUMMY_PLACES[index]),
+                      child: Text(
+                        DUMMY_PLACES[index].titulo,
+                      ),
                     ),
                   ),
                   trailing: Container(

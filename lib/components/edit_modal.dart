@@ -1,5 +1,6 @@
 import 'package:f3_lugares/models/place.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../data/my_data.dart';
 import 'recommendation_modal.dart';
 
@@ -54,6 +55,7 @@ class _EditModalState extends State<EditModal> {
     rateNode = FocusNode();
     imgUrlNode = FocusNode();
     oldPlace = widget.place;
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     super.initState();
   }
 
@@ -214,7 +216,7 @@ class _EditModalState extends State<EditModal> {
   Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom + 20, left: 10),
+            bottom: MediaQuery.of(context).viewInsets.bottom, left: 10),
         child: SingleChildScrollView(
           child: Form(
             child: Column(children: [
