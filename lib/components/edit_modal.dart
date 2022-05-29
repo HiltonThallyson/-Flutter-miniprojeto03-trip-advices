@@ -70,7 +70,7 @@ class _EditModalState extends State<EditModal> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text('Selecione ao menos 1 pais'),
+                    Text('Selecione pelo menos 1 país'),
                     ElevatedButton(
                         onPressed: () => Navigator.of(context).pop(),
                         child: Text('Ok')),
@@ -92,7 +92,7 @@ class _EditModalState extends State<EditModal> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text('Cadastre pelo menos 1 recomendacao'),
+                    Text('Cadastre pelo menos 1 recomendação'),
                     ElevatedButton(
                         onPressed: () => Navigator.of(context).pop(),
                         child: Text('Ok')),
@@ -154,7 +154,7 @@ class _EditModalState extends State<EditModal> {
     }
     if (rateDouble != null) {
       if (rateDouble < 0 || rateDouble > 5) {
-        return 'Valor invalido';
+        return 'Valor inválido';
       }
     }
     return null;
@@ -167,7 +167,7 @@ class _EditModalState extends State<EditModal> {
     }
     if (avgCostDouble != null) {
       if (avgCostDouble < 0) {
-        return 'Valor invalido';
+        return 'Valor inválido';
       }
     }
     return null;
@@ -232,7 +232,7 @@ class _EditModalState extends State<EditModal> {
                   }
                 }),
                 decoration: InputDecoration(
-                  labelText: 'Titulo',
+                  labelText: 'Título',
                   errorText: _titleErrorText,
                 ),
               ),
@@ -264,7 +264,7 @@ class _EditModalState extends State<EditModal> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Selecione o pais'),
+                    Text('Selecione o país'),
                     SizedBox(
                       height: 20,
                     ),
@@ -305,7 +305,7 @@ class _EditModalState extends State<EditModal> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Expanded(child: Text('Recomendacoes')),
+                        Expanded(child: Text('Recomendações')),
                         TextButton(
                             onPressed: () {
                               showModalBottomSheet(
@@ -314,7 +314,7 @@ class _EditModalState extends State<EditModal> {
                                     return RecommendationModal(recommendations);
                                   });
                             },
-                            child: Text('Gerenciar recomendacao'))
+                            child: Text('Gerenciar recomendação'))
                       ],
                     ),
                     ElevatedButton(

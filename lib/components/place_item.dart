@@ -42,6 +42,28 @@ class PlaceItem extends StatelessWidget {
                 ),
                 child: Image.network(
                   place.imagemUrl,
+                  errorBuilder: ((context, error, stackTrace) => Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.only(
+                              left: 65,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.error,
+                                  size: 250,
+                                ),
+                                Text(
+                                  'Imagem não encontrada!',
+                                  style: TextStyle(fontSize: 27),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )),
                   height: 250,
                   width: double.infinity,
                   fit: BoxFit.cover,

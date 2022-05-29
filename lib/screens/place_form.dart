@@ -36,11 +36,11 @@ class _PlaceFormState extends State<PlaceForm> {
   List<String> recommendations = [];
 
   static const snackBarCountryError = SnackBar(
-    content: Text('Selecione ao menos 1 pais'),
+    content: Text('Selecione pelo menos 1 país'),
     duration: const Duration(seconds: 1),
   );
   static const snackBarRecommendationError = SnackBar(
-    content: Text('Cadastre pelo menos 1 recomendacao'),
+    content: Text('Cadastre pelo menos 1 recomendação'),
     duration: const Duration(seconds: 1),
   );
 
@@ -147,7 +147,7 @@ class _PlaceFormState extends State<PlaceForm> {
     }
     if (rateDouble != null) {
       if (rateDouble < 0 || rateDouble > 5) {
-        return 'Valor invalido';
+        return 'Valor inválido ';
       }
     }
     return null;
@@ -160,7 +160,7 @@ class _PlaceFormState extends State<PlaceForm> {
     }
     if (avgCostDouble != null) {
       if (avgCostDouble < 0) {
-        return 'Valor invalido';
+        return 'Valor inválido ';
       }
     }
     return null;
@@ -203,7 +203,7 @@ class _PlaceFormState extends State<PlaceForm> {
                   autofocus: true,
                   focusNode: titleNode,
                   decoration: InputDecoration(
-                      labelText: 'Titulo', errorText: _titleErrorText),
+                      labelText: 'Título', errorText: _titleErrorText),
                   onChanged: (_) {
                     setState(() {
                       title = _titleController.text;
@@ -228,7 +228,7 @@ class _PlaceFormState extends State<PlaceForm> {
                 controller: _averageCostController,
                 focusNode: avgCostNode,
                 decoration: InputDecoration(
-                    labelText: 'Custo medio',
+                    labelText: 'Custo médio',
                     hintText: 'Insira um valor em reais',
                     errorText: _avgCostErrorText),
                 keyboardType: TextInputType.number,
@@ -241,7 +241,7 @@ class _PlaceFormState extends State<PlaceForm> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Selecione o pais'),
+                  Text('Selecione o país'),
                   SizedBox(
                     height: 20,
                   ),
@@ -286,7 +286,7 @@ class _PlaceFormState extends State<PlaceForm> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Expanded(child: Text('Recomendacoes')),
+                      Expanded(child: Text('Recomendações')),
                       TextButton(
                           onPressed: () {
                             showModalBottomSheet(
@@ -295,7 +295,7 @@ class _PlaceFormState extends State<PlaceForm> {
                                   return RecommendationModal(recommendations);
                                 });
                           },
-                          child: Text('Gerenciar recomendacao'))
+                          child: Text('Gerenciar recomendações'))
                     ],
                   ),
                 ],

@@ -22,7 +22,7 @@ class _RecommendationModalState extends State<RecommendationModal> {
         children: [
           TextField(
             controller: _recommendationController,
-            decoration: InputDecoration(labelText: 'Recomendacao'),
+            decoration: InputDecoration(labelText: 'Recomendação'),
           ),
           Container(
               height: 200,
@@ -59,7 +59,7 @@ class _RecommendationModalState extends State<RecommendationModal> {
                       }
                     });
                   },
-                  child: Text('Adicionar mais recomendacoes')),
+                  child: Text('Adicionar mais recomendações')),
               ElevatedButton(
                   onPressed: () {
                     if (_recommendationController.text.isNotEmpty) {
