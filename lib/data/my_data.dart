@@ -39,6 +39,7 @@ const DUMMY_COUNTRIES = const [
     title: 'Brasil',
     color: Colors.lightGreen,
   ),
+  Country(id: 'c9', title: 'Cuba', color: Colors.blue),
   Country(
     id: 'c10',
     title: 'Egito',

@@ -1,5 +1,7 @@
+import 'package:f3_lugares/components/edit_modal.dart';
 import 'package:f3_lugares/components/place_item.dart';
 import 'package:f3_lugares/data/my_data.dart';
+import 'package:f3_lugares/models/country.dart';
 import 'package:f3_lugares/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 
@@ -11,89 +13,24 @@ class EditPlaces extends StatefulWidget {
 }
 
 class _EditPlacesState extends State<EditPlaces> {
-  final _titleController = TextEditingController();
-  final _rateController = TextEditingController();
-
-  late String title;
-  late double rate;
-  late String id;
-  bool isUpdated = false;
-  //late double avgCost;
-
-  void _submitUpdate(Place oldPlace) {
-    final newPlace = Place(
-        id: oldPlace.id,
-        paises: oldPlace.paises,
-        titulo: title,
-        imagemUrl: oldPlace.imagemUrl,
-        recomendacoes: oldPlace.recomendacoes,
-        avaliacao: rate,
-        custoMedio: oldPlace.avaliacao);
-    setState(() {
-      if (isUpdated) {
-        DUMMY_PLACES.removeWhere((place) => place.id == id);
-        DUMMY_PLACES.add(newPlace);
-      }
-    });
-    Navigator.pop(context);
-  }
-
   void _editPlace(Place place) {
-    title = place.titulo;
-    rate = place.avaliacao;
-    id = place.id;
-
-    setState(() {
-      _titleController.text = title;
-      _rateController.text = rate.toString();
-    });
-
-    showModalBottomSheet(
+    Future isUpdated = showModalBottomSheet(
         context: context,
+        isScrollControlled: true,
         builder: (BuildContext context) {
-          return Container(
-            height: MediaQuery.of(context).size.height / 2,
-            child: SingleChildScrollView(
-              child: Form(
-                child: Column(
-                  children: [
-                    TextField(
-                      controller: _titleController,
-                      onChanged: (_) => setState(() {
-                        title = _titleController.text;
-                      }),
-                      decoration: InputDecoration(
-                        labelText: 'Titulo',
-                      ),
-                    ),
-                    TextField(
-                      controller: _rateController,
-                      onChanged: (_) => setState(() {
-                        if (_rateController.text == place.avaliacao) {
-                          isUpdated = false;
-                        } else {
-                          rate = double.parse(_rateController.text);
-                          isUpdated = true;
-                        }
-                      }),
-                      decoration: InputDecoration(
-                        labelText: 'Titulo',
-                      ),
-                    ),
-                    ElevatedButton(
-                        onPressed: () => _submitUpdate(place),
-                        child: Text('Atualizar'))
-                  ],
-                ),
-              ),
-            ),
-          );
-        });
+          return EditModal(place);
+        }).then((_) => setState(
+          () {},
+        ));
   }
 
   void _deletePlace(String id) {
     setState(() {
       DUMMY_PLACES.removeWhere((place) => place.id == id);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Lugar removido com sucesso!'),
+        duration: Duration(seconds: 2),
+      ));
     });
   }
 

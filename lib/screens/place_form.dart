@@ -4,6 +4,7 @@ import 'package:f3_lugares/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
+import '../components/recommendation_modal.dart';
 import '../data/my_data.dart';
 import '../models/place.dart';
 
@@ -21,6 +22,7 @@ class _PlaceFormState extends State<PlaceForm> {
   late FocusNode titleNode;
   late FocusNode avgCostNode;
   late FocusNode rateNode;
+  late FocusNode imgUrlNode;
 
   List<String> countries = [];
   String title = '';
@@ -31,9 +33,15 @@ class _PlaceFormState extends State<PlaceForm> {
   bool isAvgCostValid = false;
   bool isTitleValid = false;
   bool isPlaceAdded = false;
+  bool isUrlEmpty = true;
+  List<String> recommendations = [];
 
   static const snackBarCountryError = SnackBar(
     content: Text('Selecione ao menos 1 pais'),
+    duration: const Duration(seconds: 1),
+  );
+  static const snackBarRecommendationError = SnackBar(
+    content: Text('Cadastre pelo menos 1 recomendacao'),
     duration: const Duration(seconds: 1),
   );
 
@@ -42,7 +50,7 @@ class _PlaceFormState extends State<PlaceForm> {
     titleNode = FocusNode();
     avgCostNode = FocusNode();
     rateNode = FocusNode();
-
+    imgUrlNode = FocusNode();
     super.initState();
   }
 
@@ -51,12 +59,17 @@ class _PlaceFormState extends State<PlaceForm> {
     titleNode.dispose();
     avgCostNode.dispose();
     rateNode.dispose();
+    imgUrlNode.dispose();
     super.dispose();
   }
 
   void _validateForm() {
     if (countries.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(snackBarCountryError);
+      return;
+    }
+    if (recommendations.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(snackBarRecommendationError);
       return;
     }
     if (!isTitleValid) {
@@ -68,14 +81,16 @@ class _PlaceFormState extends State<PlaceForm> {
     } else if (!isAvgCostValid) {
       FocusScope.of(context).requestFocus(avgCostNode);
       return;
+    } else if (isUrlEmpty) {
+      FocusScope.of(context).requestFocus(imgUrlNode);
+      return;
     } else {
       final newPlace = Place(
           id: Random().nextInt(100).toString(),
           paises: countries,
           titulo: title,
-          imagemUrl:
-              'https://f.i.uol.com.br/fotografia/2021/10/18/1634577429616dac156d431_1634577429_3x2_md.jpg',
-          recomendacoes: ['', ''],
+          imagemUrl: imageURL,
+          recomendacoes: recommendations,
           avaliacao: double.parse(rate),
           custoMedio: double.parse(avgCost));
       DUMMY_PLACES.add(newPlace);
@@ -152,6 +167,13 @@ class _PlaceFormState extends State<PlaceForm> {
     return null;
   }
 
+  String? get _imgErrorText {
+    if (_imgURLController.text.isEmpty) {
+      return 'Insira uma url da imagem';
+    }
+    return null;
+  }
+
   DropdownMenuItem<String> buildMenuItem(String item) {
     return DropdownMenuItem(
       child: Text(item),
@@ -163,9 +185,14 @@ class _PlaceFormState extends State<PlaceForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context)
+                .popAndPushNamed(AppRoutes.HOME, result: false),
+          ),
           title: Text(
-        'New Place',
-      )),
+            'New Place',
+          )),
       body: Container(
         padding: EdgeInsets.all(25),
         child: SingleChildScrollView(
@@ -243,11 +270,35 @@ class _PlaceFormState extends State<PlaceForm> {
                     width: 20,
                   ),
                   TextField(
+                      enableInteractiveSelection: true,
                       controller: _imgURLController,
-                      decoration: InputDecoration(labelText: 'Link da imagem'),
-                      onEditingComplete: () => setState(() {
-                            imageURL = _imgURLController.text;
+                      focusNode: imgUrlNode,
+                      decoration: InputDecoration(
+                          labelText: 'Link da imagem',
+                          errorText: _imgErrorText),
+                      onChanged: (_) => setState(() {
+                            if (_imgErrorText == null) {
+                              isUrlEmpty = false;
+                              imageURL = _imgURLController.text;
+                            } else {
+                              isUrlEmpty = true;
+                            }
                           })),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Expanded(child: Text('Recomendacoes')),
+                      TextButton(
+                          onPressed: () {
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return RecommendationModal(recommendations);
+                                });
+                          },
+                          child: Text('Gerenciar recomendacao'))
+                    ],
+                  ),
                 ],
               ),
               Align(
